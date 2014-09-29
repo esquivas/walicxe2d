@@ -2,6 +2,7 @@ Walicxe-2D
 ==========
 
 Walicxe original (2D) vesion
+
 Walicxe is a hydrodynamical code suited for astrophysical fluids. 
 It runs in parallel with MPI and it has adaptive mesh refinement.
 
