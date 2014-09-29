@@ -20,12 +20,12 @@ subroutine refine(nb,son1,son2,son3,son4)
   dest3 = son3/nblocks
   dest4 = son4/nblocks
 #endif
-  !
+  
   !if(rank.eq.source) print'(a,i6,a,4i6)','refining   block  '       &
   !     , nb,' ->',son1,son2,son3,son4
-  !
+  
   !---------------------------------------------------------------------
-  !
+  
   !   update the u's
 #ifndef MPIP
   do i=nxmin,nxmax
@@ -36,13 +36,13 @@ subroutine refine(nb,son1,son2,son3,son4)
         u(son4,:,i,j)=u( nb,:, (i+1)/2+nx2,(j+1)/2+ny2 )
      end do
   end do
-  !
+  
   !   for the icoords
   nx0=icoord(nb,1)*2!(2**(nlevs2+1))
   ny0=icoord(nb,2)*2!(2**(nlevs2+1))
-  !
+  
 #else
-  !
+  
   !   for the icoords
   if (rank.eq.source) then
      nx0=icoord(nb,1)*2!(2**(nlevs2+1))
@@ -50,8 +50,7 @@ subroutine refine(nb,son1,son2,son3,son4)
      nxy0(1)=nx0
      nxy0(2)=ny0
   end if
-  !
-  !
+  
   !   do blocks one by one
   !--------------------
   !   son1
@@ -88,7 +87,7 @@ subroutine refine(nb,son1,son2,son3,son4)
               u(son1,:,i,j)=recv( 1,:, (i+1)/2     ,(j+1)/2     )
            end do
         end do
-        !
+
         deallocate(recv)
      end if
      !
@@ -116,7 +115,7 @@ subroutine refine(nb,son1,son2,son3,son4)
      !   receive
      if (rank.eq.dest2) then
         allocate(recv(1,neq,nx2:nx+1,0:ny2+1))
-        !
+
         call mpi_recv(recv, scount, mpi_real_kind, &
              source,0,mpi_comm_world, status, err )
         call mpi_recv(nxy0, 2 ,mpi_integer, &
@@ -129,10 +128,10 @@ subroutine refine(nb,son1,son2,son3,son4)
               u(son2,:,i,j)=recv( 1,:, (i+1)/2+nx2,(j+1)/2     )
            end do
         end do
-        !
+
         deallocate(recv)
      end if
-     !
+
      !print*,'son2: ', son2,' from ', source, 'on ',rank
      call mpi_barrier(mpi_comm_world,err)
   end if
@@ -156,9 +155,9 @@ subroutine refine(nb,son1,son2,son3,son4)
      end if
      !   receive
      if (rank.eq.dest3) then
-        !
+
         allocate(recv(1,neq,0:nx2+1,ny2:ny+1))
-        !
+
         call mpi_recv(recv(1 ,:,0:nx2+1,ny2:ny+1), scount,mpi_real_kind, &
              source,0,mpi_comm_world, status, err )
         call mpi_recv(nxy0, 2 ,mpi_integer, &
@@ -171,10 +170,10 @@ subroutine refine(nb,son1,son2,son3,son4)
               u(son3,:,i,j)=recv( 1,:, (i+1)/2     ,(j+1)/2+ny2)
            end do
         end do
-        !
+
         deallocate(recv)
      end if
-     !
+
      !print*,'son3: ', son3,' from ', source, 'on ',rank
      call mpi_barrier(mpi_comm_world,err)
   end if
@@ -199,9 +198,9 @@ subroutine refine(nb,son1,son2,son3,son4)
      !   receive
      if (rank.eq.dest4) then
 
-        !
+
         allocate(recv(1,neq,nx2:nx+1,ny2:ny+1))
-        !
+
         call mpi_recv(recv(1 ,:,nx2:nx+1,ny2:ny+1), scount,mpi_real_kind, &
              source,0,mpi_comm_world, status, err )
         call mpi_recv(nxy0, 2 ,mpi_integer, &
@@ -214,17 +213,17 @@ subroutine refine(nb,son1,son2,son3,son4)
               u(son4,:,i,j)=recv( 1,:, (i+1)/2+nx2,(j+1)/2+ny2) 
            end do
         end do
-        !
+
         deallocate(recv)
      end if
-     !
+
      !print*,'son4: ', son4,' from ', source, 'on ',rank
      call mpi_barrier(mpi_comm_world,err)
   end if
   !--------------------
   !
 #endif
-  !
+
   !   update the icoords
 #ifdef MPIP
   if (rank.eq.dest1) then
@@ -260,9 +259,7 @@ subroutine refine(nb,son1,son2,son3,son4)
 #ifdef MPIP
   end if
 #endif
-  !
   !--------------------------------------------------------------------
-  !
 end subroutine refine
 !=======================================================================
 
