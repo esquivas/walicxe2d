@@ -25,7 +25,7 @@ subroutine coarse(dad,son1,son2,son3,son4)
   !
   !if (rank.eq.0) print'(a,2i6,a,4i6,3i6)','derefining blocks '       &
   !    ,rank,dad,' <-',son1,son2,son3,son4,nbmax,nbleafs
-  !
+  
 #ifndef MPIP
   !----------------------------------------------------------------
   !   the block itself
@@ -37,14 +37,14 @@ subroutine coarse(dad,son1,son2,son3,son4)
         j2 = j1+1
         nx2i = nx2+i
         ny2j = ny2+j
-        !
+        
         do ieq=1,neq
            u(dad,ieq,i   ,j   ) = 0.25*sum( u(son1,ieq,i1:i2,j1:j2) )
            u(dad,ieq,nx2i,j   ) = 0.25*sum( u(son2,ieq,i1:i2,j1:j2) )
            u(dad,ieq,i   ,ny2j) = 0.25*sum( u(son3,ieq,i1:i2,j1:j2) )
            u(dad,ieq,nx2i,ny2j) = 0.25*sum( u(son4,ieq,i1:i2,j1:j2) )
         end do
-        !
+        
      end do
   end do
   !
@@ -57,12 +57,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
         do j  = 1,ny2
            j1 = 2*j-1
            j2 = j1+1
-           !
+           
            do ieq=1,neq
               u(dad,ieq,i ,j    ) = 0.5*sum( u(son1,ieq,i,j1:j2) )
               u(dad,ieq,i ,ny2+j) = 0.5*sum( u(son3,ieq,i,j1:j2) )
            end do
-           !
+           
         end do
      end do
      !   right
@@ -70,12 +70,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
         do j  = 1,ny2
            j1 = 2*j-1
            j2 = j1+1
-           !
+           
            do ieq=1,neq
               u(dad,ieq,i ,j    ) = 0.5*sum( u(son2,ieq,i,j1:j2) )
               u(dad,ieq,i ,ny2+j) = 0.5*sum( u(son4,ieq,i,j1:j2) )
            end do
-           !
+           
         end do
      end do
      !   bottom
@@ -83,12 +83,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
         do j  = nymin,0
            i1 = 2*i-1
            i2 = i1+1
-           !
+           
            do ieq=1,neq
               u(dad,ieq,i    ,j ) = 0.5*sum( u(son1,ieq,i1:i2,j) )
               u(dad,ieq,nx2+i,j ) = 0.5*sum( u(son2,ieq,i1:i2,j) )
            end do
-           !
+           
         end do
      end do
      !   top
@@ -96,12 +96,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
         do j  = ny+1,nymax
            i1 = 2*i-1
            i2 = i1+1
-           !
+           
            do ieq=1,neq
               u(dad,ieq,i    ,j ) = 0.5*sum( u(son3,ieq,i1:i2,j) )
               u(dad,ieq,nx2+i,j ) = 0.5*sum( u(son4,ieq,i1:i2,j) )
            end do
-           !
+           
         end do
      end do
      !---------------------
@@ -115,12 +115,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
         do j  = 1,ny2
            j1 = 2*j-1
            j2 = j1+1
-           !
+           
            do ieq=1,neq
               u(dad,ieq,i ,j    ) = 0.25*sum( u(son1,ieq,-1:0,j1:j2) )
               u(dad,ieq,i ,ny2+j) = 0.25*sum( u(son3,ieq,-1:0,j1:j2) )
            end do
-           !
+           
         end do
      end do
      !   right
@@ -132,12 +132,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
         do j  = 1,ny2
            j1 = 2*j-1
            j2 = j1+1
-           !
+           
            do ieq=1,neq
               u(dad,ieq,i ,j    ) = 0.25*sum( u(son2,ieq,nx+1:nxmax,j1:j2) )
               u(dad,ieq,i ,ny2+j) = 0.25*sum( u(son4,ieq,nx+1:nxmax,j1:j2) )
            end do
-           !
+           
         end do
      end do
      !   bottom
@@ -149,12 +149,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
         do j  = nymin,0
            i1 = 2*i-1
            i2 = i1+1
-           !
+           
            do ieq=1,neq
               u(dad,ieq,i    ,j ) = 0.25*sum( u(son1,ieq,i1:i2,-1:0) )
               u(dad,ieq,nx2+i,j ) = 0.25*sum( u(son2,ieq,i1:i2,-1:0) )
            end do
-           !
+           
         end do
      end do
      !   top
@@ -166,12 +166,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
         do j  = ny+1,nymax
            i1 = 2*i-1
            i2 = i1+1
-           !
+           
            do ieq=1,neq
               u(dad,ieq,i    ,j ) = 0.25*sum( u(son3,ieq,i1:i2,ny+1:nymax) )
               u(dad,ieq,nx2+i,j ) = 0.25*sum( u(son4,ieq,i1:i2,ny+1:nymax) )
            end do
-           !
+           
         end do
      end do
      !---------------------
@@ -230,7 +230,7 @@ subroutine coarse(dad,son1,son2,son3,son4)
   end if
   !print*,'done son1'
   !call mpi_barrier(mpi_comm_world,err)
-  !
+  
   !   son2
   if (rank.eq.dest .or. rank.eq.source2) then
      if (source2.eq.dest) then
@@ -257,19 +257,19 @@ subroutine coarse(dad,son1,son2,son3,son4)
               end do
            end do
            call mpi_send(send2,scount,mpi_real_kind,dest,1,mpi_comm_world, err)
-           !
+
         end if
         if (rank.eq.dest) then
            call mpi_recv( u(dad,:,nx2p1:nxp1,0:ny2)  &
                 ,scount,mpi_real_kind,source2,1,mpi_comm_world, status, err)
-           !
+
         end if
         !
      end if
   end if
   !print*,'done son2'
   !call mpi_barrier(mpi_comm_world,err)
-  !
+  
   !   son3
   if (rank.eq.dest .or. rank.eq.source3) then
      if (source3.eq.dest) then
@@ -301,12 +301,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
            call mpi_recv( u(dad,:,0:nx2,ny2p1:nyp1)  &
                 ,scount,mpi_real_kind,source3,3,mpi_comm_world, status, err)
         end if
-        !
-     end if
+ 
+      end if
   end if
   !print*,'done son3'
   !call mpi_barrier(mpi_comm_world,err)
-  !
+
   !   son4
   if (rank.eq.dest .or. rank.eq.source4) then
      if (source4.eq.dest) then
@@ -338,12 +338,12 @@ subroutine coarse(dad,son1,son2,son3,son4)
            call mpi_recv( u(dad,:,nx2p1:nxp1,ny2p1:nyp1)  &
                 ,scount,mpi_real_kind,source4,4,mpi_comm_world, status, err)
         end if
-        !
+
      end if
   end if
   !print*,'done son4'
   !call mpi_barrier(mpi_comm_world,err)
-  !
+
   !   fill the outer ghost cells
   if (rank.eq.dest) then
      do ieq=1,neq
@@ -364,6 +364,6 @@ subroutine coarse(dad,son1,son2,son3,son4)
   call mpi_barrier(mpi_comm_world,err)
   !----------------------------------------------------------------
 #endif
-  !
+  
 end subroutine coarse
 !=======================================================================
