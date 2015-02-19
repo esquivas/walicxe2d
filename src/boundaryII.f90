@@ -642,11 +642,11 @@ subroutine boundaryII(time)
                  end do
               end do
            end do
+          do ieq=1,neq
+            up(nbs,ieq, 0,nymax )= up(nbs,ieq, 0,nyp1 )  
+            up(nbs,ieq,-1,nymax )= up(nbs,ieq,-1,nyp1 )
+          end do
         end if
-        do ieq=1,neq
-           up(nbs,ieq, 0,nymax )= up(nbs,ieq, 0,nyp1 )  
-           up(nbs,ieq,-1,nymax )= up(nbs,ieq,-1,nyp1 )
-        end do
         !
         !   neighbor's right
         if (rank.eq.dest2)  then
