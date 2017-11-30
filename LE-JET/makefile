@@ -4,6 +4,10 @@
 #   Name of the executable
 PROGRAM=WALICXE-2D
 #
+#  Seaerh Path, object files are searched in the order below
+VPATH = . : ../src
+#
+#   Choice of compiler: ifort and gfortran are the only implemented
 #   Choice of compiler: ifort and gfortran are tested
 #   if MPI enabled, do not use mpif90, but rather the base compiler
 #   of the mpi build (see 'mpif90 --version')
@@ -13,7 +17,8 @@ COMPILER= ifort
 #   Compiler flags, make sure they are compatible with 
 #   the previous selection
 #  -g -traceback
-FLAGS= -O3 -cpp -i_dynamic -vec-report0
+FLAGS= -O3 -cpp
+# -i_dynamic -vec-report0
 #
 #---------------------------------------------------
 #   compilation time parameters (Y=on, N=off)
@@ -38,7 +43,7 @@ CYLINDRICAL = Y
 #   H: single parametrized cooling function
 #   BBC: cooling function of Benjamin, Benson and Cox (2003)
 #   DMC: Coronal eq. (tabulated) from Dalgarno & Mc Cray (1972)
-COOLING   = H
+COOLING   = DMC
 #   boundary conditions
 #   options are OUTFLOW, REFLECTIVE, PERIODIC , INFLOW, OTHERB
 #   INFLOW refers to the outer grid boundary  (e.g. to
@@ -60,45 +65,45 @@ LIMITER=  2
 #####################################################
 #   list of objects to compile
 OBJECTS =\
-./src/parameters.o		\
-./src/globals.o			\
-./src/dmc_module.o		\
-./src/sn.o				\
-./src/jet.o 			\
-./src/user_mod.o 		\
-./src/main.o			\
-./src/initmain.o		\
-./src/basegrid.o		\
-./src/refine.o        	\
-./src/updatelpup.o		\
-./src/calcprim.o 		\
-./src/uprim.o 			\
-./src/loadbalance.o   	\
-./src/output.o			\
-./src/timestep.o		\
-./src/sound.o 			\
-./src/tstep.o			\
-./src/hllcfluxes.o		\
-./src/hllfluxes.o		\
-./src/hll_hllcfluxes.o	\
-./src/swapy.o			\
-./src/step.o			\
-./src/limiter.o 		\
-./src/primf.o 			\
-./src/primu.o 			\
-./src/locatebounds.o	\
-./src/viscosity.o		\
-./src/boundaryI.o		\
-./src/boundaryII.o		\
-./src/coolingh.o		\
-./src/coolingdmc.o		\
-./src/criteria.o		\
-./src/markref.o			\
-./src/critneighup.o 	\
-./src/critneighdown.o	\
-./src/admesh.o			\
-./src/coarse.o			\
-./src/updatelpdown.o
+parameters.o	\
+globals.o		\
+dmc_module.o	\
+sn.o			\
+jet.o 			\
+user_mod.o 		\
+main.o			\
+initmain.o		\
+basegrid.o		\
+refine.o        \
+updatelpup.o	\
+calcprim.o 		\
+uprim.o 		\
+loadbalance.o  	\
+output.o		\
+timestep.o		\
+sound.o 		\
+tstep.o			\
+hllcfluxes.o	\
+hllfluxes.o		\
+hll_hllcfluxes.o\
+swapy.o			\
+step.o			\
+limiter.o 		\
+primf.o 		\
+primu.o 		\
+locatebounds.o	\
+viscosity.o		\
+boundaryI.o		\
+boundaryII.o	\
+coolingh.o		\
+coolingdmc.o	\
+criteria.o		\
+markref.o		\
+critneighup.o 	\
+critneighdown.o	\
+admesh.o		\
+coarse.o		\
+updatelpdown.o
 #---------------------------------------------------
 ifeq ($(DOUBLEP),Y)
 FLAGS += -DDOUBLEP
