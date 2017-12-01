@@ -2,13 +2,13 @@
 !   This module contains all variables and constants that are global
 !=======================================================================
 module parameters
-  implicit none 
+  implicit none
 #ifdef MPIP
   include "mpif.h"
 #endif
   !   output path
   character (len=128),parameter ::                                     &
-       outputpath='./Cool'
+       outputpath='./'
   integer, parameter :: neq=5,ndim=2   ! number of eqs (+scal) and dimensions
   integer, parameter :: npas=1         ! number of passive scalars
   integer, parameter :: nghost=2       ! number of ghost cells
@@ -36,13 +36,13 @@ module parameters
   !--------------------------------------------------------------------
   !   the following options could go on an runtime input file
   !--------------------------------------------------------------------
-  real, parameter :: cv=1.5, gamma=(cv+1.)/cv 
+  real, parameter :: cv=1.5, gamma=(cv+1.)/cv
   !
   !  box size in normalized units
   real, parameter :: xmax=1.0, ymax=0.25
   !
   !  box size in physical (cgs) units
-  real, parameter :: xphys=6.E17 !cm 
+  real, parameter :: xphys=6.E17 !cm
   !--------------------------------------------------------------------
   !
   !   scaling factors to physical (cgs) units
@@ -65,7 +65,7 @@ module parameters
   real, parameter :: cfl=0.5
   !   Viscosity
   real, parameter :: eta=0.001
-  ! 
+  !
   !   for an iwarm (0->from t=0,1->starts from t=itprint*dtprint
   integer, parameter :: iwarm=0
   integer, parameter :: itprint0=100
