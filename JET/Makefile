@@ -111,6 +111,9 @@ critneighdown.o	\
 admesh.o		\
 coarse.o		\
 updatelpdown.o
+
+# Join object lists
+OBJECTS_ALL     = ${MODULES_MAIN} ${MODULES_USER} ${OBJECTS_MAIN}
 #---------------------------------------------------
 ifeq ($(DOUBLEP),Y)
 FLAGS += -DDOUBLEP
