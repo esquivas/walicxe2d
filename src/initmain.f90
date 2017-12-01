@@ -82,7 +82,9 @@ subroutine initmain(time, tprint, itprint)
   !
 #ifdef COOLINGDMC
   if(rank.eq.master) then
-     open(unit=10,file='/home/esquivel/Walicxe-2D/src/DMClib/coolingDMC.tab',status='old')
+     open(unit=10,file='../src/DMClib/coolingDMC.tab',status='old')
+     print'(a)'
+     print'(a)', 'reading DMC cooling table'
      do i=1,41
         read(10,*) a, b
         cooltab(1,i)=10.d0**(a)
@@ -95,7 +97,7 @@ subroutine initmain(time, tprint, itprint)
 #endif
 #endif
   !
-  !  User input initialization, it is called always, 
+  !  User input initialization, it is called always,
   !  it has to be there, even empty
   call init_user_mod()
   !
