@@ -14,7 +14,7 @@ VPATH = . : ../src
 #COMPILER= gfortran
 COMPILER= ifort
 #
-#   Compiler flags, make sure they are compatible with 
+#   Compiler flags, make sure they are compatible with
 #   the previous selection
 #  -g -traceback
 FLAGS= -O3 -cpp
@@ -60,18 +60,25 @@ OTHERB  = Y
 #   2: Van Leer, 3: Van Albada,4: UMIST, 5: Woodward
 #   6: Superbee
 LIMITER=  2
+
+# Additional USER modules to compile (they can only call
+# parameters and globals)
+MODULES_USER= \
+jet.o \
+sn.o
+
 #####################################################
 # There should be no need to modify below this line #
 #####################################################
-#   list of objects to compile
-OBJECTS =\
+MODULES_MAIN = \
 parameters.o	\
 globals.o		\
-dmc_module.o	\
-sn.o			\
-jet.o 			\
+
+#   list of objects to compile
+OBJECTS_MAIN = \
 user_mod.o 		\
 main.o			\
+dmc_module.o	\
 initmain.o		\
 basegrid.o		\
 refine.o        \
@@ -198,14 +205,37 @@ FLAGS += -DOTHERB
 endif
 FLAGS += -DLIMITER=$(LIMITER)
 #---------------------------------------------------
-$(PROGRAM)  : ${OBJECTS}
-	$(COMPILER) $(FLAGS) -o $@ $(OBJECTS)
+# Compilation rules
+$(PROGRAM)  : prebuild ${OBJECTS_ALL}
+	@echo Linking object files ...
+	@echo Linking flags used: $(LINKFLAGS)
+	@$(COMPILER) $(FLAGS) $(LINKFLAGS)  $(OBJECTS_ALL) -o $@
+	@echo Cleaning up ...
+	@rm -f *.o *.mod
+	@echo "Done! (`date`)"
 
+prebuild :
+	@echo "walixce build started `date`"
+	@echo Compiling flags used: $(FLAGS)
+%.o:%.f95
+	@echo Compiling $^ ...
+	@$(COMPILER) $(FLAGS) -c $< -o $@
 %.o:%.f90
-	$(COMPILER) $(FLAGS) -c $^ -o $@
+	@echo Compiling $^ ...
+	@$(COMPILER) $(FLAGS) -c $< -o $@
+%.o:%.f
+	@echo Compiling $^ ...
+	@$(COMPILER) $(FLAGS) -c $< -o $@
+%.o:%.F95
+	@echo Compiling $^ ...
+	@$(COMPILER) $(FLAGS) -c $< -o $@
+%.o:%.F90
+	@echo Compiling $^ ...
+	@$(COMPILER) $(FLAGS) -c $< -o $@
+%.o:%.F
+	@echo Compiling $^ ...
+	@$(COMPILER) $(FLAGS) -c $< -o $@
 
-.PHONY : clean
 clean :
-	rm -f *.o *.mod src/*.o src/*.mod
-	rm -f $(PROGRAM)
-#---------------------------------------------------
+	rm -f *.o *.mod
+	rm -f $(PROGRAM)  *.out *.err
