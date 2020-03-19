@@ -33,7 +33,7 @@ subroutine step(nb,dt,f,g)
         !
 #ifdef CYLINDRICAL
         !   add the source terms
-        up(nb,:,i,j)= up(nb,:,i,j)-dt*S(:)
+        up(nb,:,i,j)= up(nb,:,i,j)+dt*S(:)
 #endif
         !
      end do
@@ -62,13 +62,13 @@ contains
               +primit(nb,3,i,j)*primit(nb,3,i,j) )                   &
               +(cv+1.)*primit(nb,4,i,j)
     !
-    S(1) =      rho            *primit(nb,3,i,j)/radius
-    S(2) = rho*primit(nb,2,i,j)*primit(nb,3,i,j)/radius
-    S(3) = rho*primit(nb,3,i,j)*primit(nb,3,i,j)/radius
-    S(4) =       H             *primit(nb,3,i,j)/radius
+    S(1) = -      rho            *primit(nb,3,i,j)/radius
+    S(2) = - rho*primit(nb,2,i,j)*primit(nb,3,i,j)/radius
+    S(3) = - rho*primit(nb,3,i,j)*primit(nb,3,i,j)/radius
+    S(4) = -       H             *primit(nb,3,i,j)/radius
     !
 #ifdef PASSIVES
-    S(5:neqpas) = primit(nb,5:neqpas,i,j)*primit(nb,3,i,j)/radius
+    S(5:neqpas) = - primit(nb,5:neqpas,i,j)*primit(nb,3,i,j)/radius
 #endif
     !
     return
